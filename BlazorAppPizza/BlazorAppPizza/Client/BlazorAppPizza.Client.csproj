@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Shared\BlazorAppPizza.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\images\" />
+  </ItemGroup>
+
 </Project>
