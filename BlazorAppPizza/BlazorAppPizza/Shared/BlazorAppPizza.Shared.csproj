@@ -5,15 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="OrderWithStatus.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="BlazingPizza.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ComponentsLibrary\ComponentsLibrary.csproj" />
   </ItemGroup>
 
 </Project>

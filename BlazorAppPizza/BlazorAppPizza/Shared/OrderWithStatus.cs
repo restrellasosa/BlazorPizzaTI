@@ -1,12 +1,11 @@
 ﻿//using DocumentFormat.OpenXml.Drawing.Charts;
-using ComponentsLibrary.map;
+using ComponentsLibrary.Map;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 
 
-namespace BlazingPizza.Shared
+namespace BlazorAppPizza.Shared
 {
     public class OrderWithStatus
     {
@@ -17,20 +16,20 @@ namespace BlazingPizza.Shared
 
         public string StatusText { get; set; }
 
-        public List<marker> Mapmarkers { get; set; }
+        public List<Marker> Mapmarkers { get; set; }
 
         public static OrderWithStatus FromOrder(Order order)
         {
             // To simulate a real backend process, we fake status updates based on the amount
             // of time since the order was placed
             string statusText;
-            List<marker> mapmarkers;
+            List<Marker> Mapmarkers;
             var dispatchTime = order.CreatedTime.Add(PreparationDuration);
 
             if (DateTime.Now < dispatchTime)
             {
                 statusText = "Preparing";
-                mapmarkers = new List<marker>
+                Mapmarkers = new List<Marker>
                 {
                     ToMapmarker("You", order.DeliveryLocation, showPopup: true)
                 };
@@ -42,7 +41,7 @@ namespace BlazingPizza.Shared
                 var startPosition = ComputeStartPosition(order);
                 var proportionOfDeliveryCompleted = Math.Min(1, (DateTime.Now - dispatchTime).TotalMilliseconds / DeliveryDuration.TotalMilliseconds);
                 var driverPosition = LatLong.Interpolate(startPosition, order.DeliveryLocation, proportionOfDeliveryCompleted);
-                mapmarkers = new List<marker>
+                Mapmarkers = new List<Marker>
                 {
                     ToMapmarker("You", order.DeliveryLocation),
                     ToMapmarker("Driver", driverPosition, showPopup: true),
@@ -51,7 +50,7 @@ namespace BlazingPizza.Shared
             else
             {
                 statusText = "Delivered";
-                mapmarkers = new List<marker>
+                Mapmarkers = new List<Marker>
                 {
                     ToMapmarker("Delivery location", order.DeliveryLocation, showPopup: true),
                 };
@@ -61,7 +60,7 @@ namespace BlazingPizza.Shared
             {
                 Order = order,
                 StatusText = statusText,
-                Mapmarkers = mapmarkers,
+                Mapmarkers = Mapmarkers,
             };
         }
 
@@ -75,9 +74,9 @@ namespace BlazingPizza.Shared
             return new LatLong(order.DeliveryLocation.Latitude + offset.Item1, order.DeliveryLocation.Longitude + offset.Item2);
         }
 
-        static marker ToMapmarker(string description, LatLong coords, bool showPopup = false)
+        static Marker ToMapmarker(string description, LatLong coords, bool showPopup = false)
         {
-            return new marker { Description = description, X = coords.Longitude, Y = coords.Latitude, ShowPopup = showPopup };
+            return new Marker { Description = description, X = coords.Longitude, Y = coords.Latitude, ShowPopup = showPopup };
         }
     }
 }
